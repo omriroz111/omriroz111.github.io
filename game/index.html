@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נוהגים בראש צלול · המשחק</title>
+<link rel="icon" href="data:,">
+<link rel="preload" href="/vendor/fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/vendor/fonts/assistant-hebrew-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/game/game.css">
+<script src="/vendor/gsap.min.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/addons/"}}</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></symbol>
+    <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 10.5l6 1M14.5 11.5l6-1M12 14.5V21"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-crash" viewBox="0 0 24 24"><path d="M12 2l2 6 6-2-3 5 5 3-6 1 1 6-5-4-4 5v-6l-6-1 5-3-3-5 6 2z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></symbol>
+  </defs>
+</svg>
+
+<canvas id="gl"></canvas>
+<div id="vignette"></div>
+<div id="flash"></div>
+
+<div id="hud">
+  <div class="h-score lg dark">
+    <div class="h-lbl">מכשולים שעברתם</div>
+    <div class="h-num"><b id="score">0</b><span>/ 19</span></div>
+    <div class="h-pips" id="pips"></div>
+  </div>
+  <div class="h-btns">
+    <button class="lg" id="gPause" title="עצירה (P)"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 4h3.5v16H7zM13.5 4H17v16h-3.5z"/></svg></button>
+    <button class="lg" id="gMute" title="קול (M)"><svg class="i"><use href="#i-sound"/></svg></button>
+    <button class="lg" id="gFull" title="מסך מלא (F)"><svg class="i"><use href="#i-full"/></svg></button>
+  </div>
+  <div class="h-hint lg dark" id="hint"><svg class="i"><use href="#i-alert"/></svg>המכשולים מגיעים לבד, ענו נכון ותתחמקו</div>
+</div>
+<div id="pause" class="screen">
+  <div class="s-card">
+    <h1>המשחק <em>בהפסקה</em></h1>
+    <button class="lg amber big" id="resumeBtn"><svg class="i"><use href="#i-play"/></svg>להמשיך</button>
+    <p class="s-note">P או Esc להפסקה והמשך</p>
+  </div>
+</div>
+
+<div id="alert" class="lg red"><svg class="i"><use href="#i-alert"/></svg><span id="alertText"></span></div>
+<div id="toast"></div>
+
+<div id="picker" class="modal">
+  <div class="m-card lg dark">
+    <div class="m-kicker"><svg class="i"><use href="#i-grid"/></svg>כדי להתחמק צריך לענות נכון</div>
+    <h2>מגרילים שאלה…</h2>
+    <div class="grid" id="grid"></div>
+    <p class="m-note">השאלה נבחרת באקראי, אי אפשר לבחור</p>
+  </div>
+</div>
+
+<div id="question" class="modal">
+  <div class="m-card q-card lg dark">
+    <div class="q-top"><span class="q-num lg amber" id="qNum">שאלה 1</span><span class="q-obs" id="qObs"></span></div>
+    <h2 id="qText"></h2>
+    <div class="answers" id="answers"></div>
+    <p class="m-note">לוחצים על תשובה, או מקלידים 1–4</p>
+  </div>
+</div>
+
+<div id="menu" class="screen">
+  <div class="s-card">
+    <div class="m-kicker">המשחק של עמרי, אמה ואלין</div>
+    <h1>נוהגים <em>בראש צלול</em></h1>
+    <div class="steps">
+      <div class="step lg dark"><span class="n">1</span><svg class="i"><use href="#i-wheel"/></svg><b>נוסעים בכביש</b><span>הרכב נוסע לבד, בלי היגוי</span></div>
+      <div class="step lg dark"><span class="n">2</span><svg class="i"><use href="#i-alert"/></svg><b>פתאום: מכשול!</b><span>מוגרלת שאלה מ־1 עד 19</span></div>
+      <div class="step lg dark"><span class="n">3</span><svg class="i"><use href="#i-shield"/></svg><b>עונים נכון ומתחמקים</b><span>תשובה שגויה היא תאונה</span></div>
+    </div>
+    <button class="lg amber big" id="goBtn"><svg class="i"><use href="#i-play"/></svg>יאללה, נוסעים</button>
+    <p class="s-note">19 שאלות מתוך חומר הלימוד בנושא אלכוהול ונהיגה</p>
+  </div>
+</div>
+
+<div id="over" class="screen">
+  <div class="s-card crash">
+    <div class="big-ic lg red"><svg class="i"><use href="#i-crash"/></svg></div>
+    <h1>תאונה!</h1>
+    <p class="lead" id="overText">תשובה שגויה, ולא הספקתם להתחמק.</p>
+    <p class="fact">אלכוהול מאריך את זמן התגובה ב־10%–30%. לנהג ששתה אין את השנייה הזאת.</p>
+    <div class="stat lg dark"><b id="overScore">0</b><span>מכשולים עברתם בהצלחה</span></div>
+    <button class="lg amber big" id="againBtn"><svg class="i"><use href="#i-redo"/></svg>מתחילים מחדש</button>
+  </div>
+</div>
+
+<div id="win" class="screen">
+  <div class="s-card win">
+    <div class="big-ic lg amber"><svg class="i"><use href="#i-trophy"/></svg></div>
+    <h1>נהג <em>מצטיין!</em></h1>
+    <p class="lead">עניתם נכון על כל 19 השאלות ועברתם את כל המכשולים.</p>
+    <p class="fact">והכי חשוב: מי שנוהג לא שותה.</p>
+    <button class="lg amber big" id="winBtn"><svg class="i"><use href="#i-redo"/></svg>עוד סיבוב</button>
+  </div>
+</div>
+
+<div id="loader"><div class="box"><div class="t">מתניעים…</div><div class="track"><div class="fill"></div></div></div></div>
+<script type="module" src="/game/game.js"></script>
+</body>
+</html>

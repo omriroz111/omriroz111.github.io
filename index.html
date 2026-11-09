@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נהיגה בהשפעת אלכוהול</title>
+<link rel="icon" href="data:,">
+<link rel="preload" href="/vendor/fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/vendor/fonts/assistant-hebrew-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/pres/pres.css">
+<script src="/vendor/gsap.min.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/addons/"}}</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3v3l5 6 5-6V3M7 21v-3l5-6 5 6v3"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 14l4-4"/><path d="M3.5 18a9 9 0 1 1 17 0"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l3 3"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4M6 16h6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-notes" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></symbol>
+    <symbol id="i-pad" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  </defs>
+</svg>
+
+<div id="deck">
+  <div id="stage">
+    <div id="bg"><div class="orb o1"></div><div class="orb o2"></div><div id="trails"></div></div>
+    <canvas id="gl"></canvas>
+
+    <!-- 1 ─ title -->
+    <section class="slide s1" data-who="עמרי, אמה ואלין" data-tr="zoom">
+      <div class="viz" data-scene="car"></div>
+      <div class="s1-text">
+        <div class="kicker">חינוך תעבורתי · עבודה לכיתות י׳</div>
+        <h1 class="title huge">נהיגה בהשפעת <em>אלכוהול</em></h1>
+        <p class="lead in">מה האלכוהול עושה לגוף ולנהיגה, מה אומר החוק, ואיך נמנעים.</p>
+        <div class="presenters">
+          <div class="who in c1"><span class="av"><svg class="i"><use href="#i-user"/></svg></span><b>עמרי</b></div>
+          <div class="who in c2"><span class="av"><svg class="i"><use href="#i-user"/></svg></span><b>אמה</b></div>
+          <div class="who in c3"><span class="av"><svg class="i"><use href="#i-user"/></svg></span><b>אלין</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 ─ what alcohol is -->
+    <section class="slide s2" data-who="עמרי" data-tr="cube">
+      <header class="head"><div class="kicker">מה זה בכלל אלכוהול?</div><h2 class="title">״<em>הסם הרטוב</em>״</h2></header>
+      <div class="body">
+        <div class="fact in"><span class="ic"><svg class="i"><use href="#i-gauge"/></svg></span><div><b>חומר מדכא</b><p>מאט את מערכת העצבים המרכזית, ואיתה את כל התגובות של הגוף.</p></div></div>
+        <div class="fact in"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span><div><b>נספג מהר</b><p>מהקיבה והמעי לזרם הדם, ומשם לכל הגוף ולמוח.</p></div></div>
+        <div class="fact in"><span class="ic"><svg class="i"><use href="#i-hourglass"/></svg></span><div><b>יוצא לאט</b><p>הכבד מפרק אותו לאט: בערך שעתיים לכל מנת משקה.</p></div></div>
+        <div class="flow in"><span>פה</span><i></i><span>קיבה</span><i></i><span>מעי</span><i></i><span class="hot">דם</span><i></i><span class="hot">מוח</span></div>
+      </div>
+      <div class="viz" data-scene="bottle"></div>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">02</span></footer>
+    </section>
+
+    <!-- 3 ─ one drink -->
+    <section class="slide s3" data-who="עמרי" data-tr="flip">
+      <header class="head center"><div class="kicker">מנת משקה אחת</div><h2 class="title">שלושה משקאות, <em>אותה השפעה</em></h2></header>
+      <div class="viz wide" data-scene="drinks"></div>
+      <div class="drinks">
+        <div class="dcard in"><b>פחית בירה</b><span>330 מ״ל</span><i>5% אלכוהול</i></div>
+        <div class="eq in">=</div>
+        <div class="dcard in"><b>חצי כוס יין</b><span>100 מ״ל</span><i>10.5%–15% אלכוהול</i></div>
+        <div class="eq in">=</div>
+        <div class="dcard in"><b>כוסית משקה חריף</b><span>30–40 מ״ל</span><i>40%–60% אלכוהול</i></div>
+      </div>
+      <p class="note in">בירה היא משקה אלכוהולי לכל דבר: <b>פחית בירה משפיעה בערך כמו כוסית וויסקי.</b></p>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">03</span></footer>
+    </section>
+
+    <!-- 4 ─ the driver -->
+    <section class="slide s4" data-who="אמה" data-tr="push">
+      <header class="head"><div class="kicker">מבט מההגה של נהג ששתה</div><h2 class="title">מה <em>קורה לנהג?</em></h2></header>
+      <div class="body">
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-clock"/></svg></span><div><b>זמן התגובה מתארך ב־10%–30%</b></div></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-ruler"/></svg></span><div><b>קשה לאמוד מרחקים ומהירויות</b></div></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-eye"/></svg></span><div><b>הראייה נפגעת ראשונה</b><p>טשטוש, ראייה כפולה, ראייה היקפית צרה, התאוששות איטית מסנוור</p></div></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-moon"/></svg></span><div><b>קואורדינציה לקויה ונמנום</b></div></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-alert"/></svg></span><div><b>ביטחון עצמי מזויף</b><p>״לי זה לא יקרה״</p></div></div>
+      </div>
+      <div class="viz screen" data-scene="drive">
+        <div class="tvflash"></div><div class="bac-hud"><span>ריכוז אלכוהול בדם</span><output id="bacVal">0.00%</output></div>
+      </div>
+      <div class="bac in" data-nonav>
+        <input id="bac" type="range" min="0" max="0.15" step="0.005" value="0">
+        <div class="bac-ticks"><span>0</span><span>0.05</span><span>0.10</span><span>0.15</span></div>
+        <p id="bacText">פיכח: הראייה והתגובות תקינות.</p>
+      </div>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">04</span></footer>
+    </section>
+
+    <!-- 5 ─ risk -->
+    <section class="slide s5" data-who="אמה" data-tr="cube">
+      <header class="head"><div class="kicker">״שיכורים לרגע, נכים לנצח״</div><h2 class="title">הסיכון <em>לתאונה</em></h2></header>
+      <div class="body">
+        <div class="bigstat in"><b>פי <span class="count" data-to="5">5</span></b><p>עולה הסיכוי להיות מעורבים בתאונה, כבר אחרי מנת משקה אחת</p></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-moon"/></svg></span><div><b>רוב התאונות בגלל אלכוהול קורות בחושך</b></div></div>
+        <div class="fact sm in"><span class="ic"><svg class="i"><use href="#i-users"/></svg></span><div><b>צעירים בני 17–24</b><p>מעורבים יותר בתאונות בכל ריכוז אלכוהול</p></div></div>
+      </div>
+      <div class="viz" data-scene="bars"><div class="viz-cap">סיכון יחסי לתאונה לפי ריכוז האלכוהול בדם</div></div>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">05</span></footer>
+    </section>
+
+    <!-- 6 ─ the law -->
+    <section class="slide s6" data-who="אלין" data-tr="swoop">
+      <header class="head"><div class="kicker">פקודת התעבורה</div><h2 class="title">מה <em>אומר החוק?</em></h2></header>
+      <div class="body wide">
+        <div class="limits">
+          <div class="lim in"><span class="who">נהג רגיל</span><b class="count" data-to="240">240</b><span class="u">מיקרוגרם בליטר אוויר נשוף</span><span class="s">או 50 מ״ג ל־100 מ״ל דם</span></div>
+          <div class="lim red in"><span class="who">נהג חדש · צעיר עד 24 · רכב ציבורי או כבד</span><b class="count" data-to="50">50</b><span class="u">מיקרוגרם בליטר אוויר נשוף</span><span class="s">או 10 מ״ג ל־100 מ״ל דם: כמעט אפס</span></div>
+        </div>
+        <p class="line in">בחשד סביר שוטר רשאי לדרוש בדיקת נשיפה, דם או שתן, והתוצאה היא <b>ראיה בבית המשפט</b>.</p>
+        <div class="chips">
+          <span class="chip in"><svg class="i"><use href="#i-card"/></svg>פסילה לשנתיים לפחות</span>
+          <span class="chip in"><svg class="i"><use href="#i-star"/></svg>10 נקודות</span>
+          <span class="chip in"><svg class="i"><use href="#i-lock"/></svg>השבתת הרכב ל־30 יום</span>
+          <span class="chip in"><svg class="i"><use href="#i-redo"/></svg>נהג חדש? עוד שנתיים ״נהג חדש״</span>
+          <span class="chip in"><svg class="i"><use href="#i-shield"/></svg>הביטוח לא מכסה</span>
+          <span class="chip in"><svg class="i"><use href="#i-ban"/></svg>סירוב לבדיקה: עד שנת מאסר או 10,000 ₪</span>
+        </div>
+      </div>
+      <div class="viz narrow" data-scene="police"></div>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">06</span></footer>
+    </section>
+
+    <!-- 7 ─ myths -->
+    <section class="slide s7" data-who="אלין" data-tr="push">
+      <header class="head"><div class="kicker">לא להאמין לכל מה ששומעים</div><h2 class="title">מיתוסים <em>מול עובדות</em></h2></header>
+      <div class="body wide">
+        <div class="myths">
+          <div class="myth in"><p class="m"><svg class="i"><use href="#i-x"/></svg>״קפה או מקלחת קרה מפכחים״</p><p class="f"><svg class="i"><use href="#i-check"/></svg>רק הזמן מפרק את האלכוהול בכבד. קפה רק משאיר ער.</p></div>
+          <div class="myth in"><p class="m"><svg class="i"><use href="#i-x"/></svg>״בירה זה לא באמת אלכוהול״</p><p class="f"><svg class="i"><use href="#i-check"/></svg>ההשפעה של בירה דומה לכל משקה אלכוהולי אחר.</p></div>
+          <div class="myth in"><p class="m"><svg class="i"><use href="#i-x"/></svg>״נחכה שעה ואז ניסע״</p><p class="f"><svg class="i"><use href="#i-check"/></svg>מנה אחת: כשעתיים. שתי מנות: כארבע שעות.</p></div>
+          <div class="myth in"><p class="m"><svg class="i"><use href="#i-x"/></svg>״אני מרגיש בסדר, אני יכול לנהוג״</p><p class="f"><svg class="i"><use href="#i-check"/></svg>האלכוהול עצמו גורם לנהג לחשוב שהוא נוהג כמו שצריך.</p></div>
+        </div>
+        <div class="prevent in">
+          <b>איך נמנעים?</b>
+          <span><svg class="i"><use href="#i-key"/></svg>קובעים מראש נהג תורן שלא שותה</span>
+          <span><svg class="i"><use href="#i-ban"/></svg>לא עולים לרכב עם נהג ששתה</span>
+          <span><svg class="i"><use href="#i-users"/></svg>אומרים ״לא״: חברים אמיתיים לא לוחצים</span>
+          <span><svg class="i"><use href="#i-route"/></svg>מתכננים מראש איך חוזרים הביתה</span>
+        </div>
+      </div>
+      <div class="viz narrow" data-scene="keys"></div>
+      <footer class="foot"><span>נהיגה בהשפעת אלכוהול</span><span class="num">07</span></footer>
+    </section>
+
+    <!-- 8 ─ game -->
+    <section class="slide s8" data-who="עמרי, אמה ואלין" data-tr="swoop">
+      <div class="viz full" data-scene="finale"></div>
+      <header class="head center top"><div class="kicker">עכשיו תורכם</div><h2 class="title huge">נוהגים <em>בראש צלול</em></h2>
+        <p class="lead in">נוהגים בכביש, ופתאום מופיע מכשול. מוגרלת שאלה מ־1 עד 19, ועונים נכון כדי להתחמק. <b>תשובה שגויה היא תאונה.</b></p></header>
+      <div class="cta in"><button class="btn-hot" id="playBtn" data-nonav><svg class="i"><use href="#i-pad"/></svg>כניסה למשחק</button>
+        <p>תודה על ההקשבה!</p></div>
+    </section>
+
+    <div id="fx"><div class="flash"></div></div>
+  </div>
+</div>
+
+<div id="progress"><i></i></div>
+<div id="bar">
+  <button id="bPrev" title="הקודם"><svg class="i"><use href="#i-prev"/></svg></button>
+  <span id="bNum">1 / 8</span>
+  <button id="bNext" title="הבא"><svg class="i"><use href="#i-next"/></svg></button>
+  
+  <button id="bNotes" title="הערות דובר (N)"><svg class="i"><use href="#i-notes"/></svg></button>
+  <button id="bFull" title="מסך מלא (F)"><svg class="i"><use href="#i-full"/></svg></button>
+</div>
+<aside id="notes"><h4>הערות דובר</h4><div id="notesWho"></div><p id="notesText"></p></aside>
+<div id="black"></div>
+
+<div id="start">
+  <div class="st-box">
+    <div class="kicker">חינוך תעבורתי · עמרי, אמה ואלין</div>
+    <h1>נהיגה בהשפעת <em>אלכוהול</em></h1>
+    <button class="btn-hot" id="startBtn"><svg class="i"><use href="#i-play"/></svg>התחל מצגת</button>
+    <p class="keys"><kbd>רווח</kbd> או קליק: השקופית הבאה · <kbd>←</kbd> חזרה · <kbd>F</kbd> מסך מלא · <kbd>N</kbd> הערות דובר</p>
+  </div>
+</div>
+
+<div id="loader"><div class="box"><div class="t">טוען את המצגת…</div><div class="track"><div class="fill"></div></div></div></div>
+<script type="module" src="/pres/pres.js"></script>
+</body>
+</html>
